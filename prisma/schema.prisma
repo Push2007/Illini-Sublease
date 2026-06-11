@@ -1,0 +1,131 @@
+// UIUC Sublease database schema
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Users & auth
+// ---------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  // Null for Google-only accounts. bcrypt hash for password accounts.
+  passwordHash  String?
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+
+  listings Listing[]
+  reports  Report[]
+}
+
+// Pending email-verification signups (6-digit code, hashed).
+model VerificationCode {
+  id           String   @id @default(uuid())
+  email        String
+  codeHash     String
+  name         String?
+  passwordHash String?
+  attempts     Int      @default(0)
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([email])
+}
+
+// ---------------------------------------------------------------------------
+// Listings
+// ---------------------------------------------------------------------------
+
+enum CampusArea {
+  NORTH // Engineering / Grainger
+  SOUTH // "Senior Land" / South Campus
+  URBANA
+  CHAMPAIGN
+}
+
+enum Term {
+  FALL
+  SPRING
+  SUMMER
+}
+
+enum RoomLayout {
+  STUDIO
+  ONE_BED
+  TWO_BED
+  ROOM_IN_SHARED // a single room inside a shared apartment
+}
+
+enum ListingStatus {
+  ACTIVE
+  RENTED
+  EXPIRED
+}
+
+model Listing {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  description     String
+  campusArea      CampusArea
+  term            Term
+  priceMonthly    Int
+  roomLayout      RoomLayout
+  bedrooms        Int?
+  address         String
+  latitude        Float
+  longitude       Float
+  distanceMiles   Float
+  busRoutes       String[]
+  petFriendly     Boolean       @default(false)
+  inUnitLaundry   Boolean       @default(false)
+  parkingIncluded Boolean       @default(false)
+  roommateGenders String?
+  // Contact info — only revealed to logged-in users (see consentToShare).
+  contactEmail    String
+  contactPhone    String?
+  consentToShare  Boolean       @default(false)
+  status          ListingStatus @default(ACTIVE)
+  availableFrom   DateTime?
+  availableTo     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  images  ListingImage[]
+  reports Report[]
+
+  @@index([status])
+  @@index([campusArea])
+  @@index([term])
+  @@index([priceMonthly])
+}
+
+model ListingImage {
+  id        String   @id @default(uuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  url       String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Report {
+  id         String   @id @default(uuid())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  reporterId String?
+  reporter   User?    @relation(fields: [reporterId], references: [id], onDelete: SetNull)
+  reason     String
+  createdAt  DateTime @default(now())
+}
