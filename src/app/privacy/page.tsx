@@ -6,9 +6,9 @@ export default function PrivacyPage() {
   return (
     <LegalShell title="Privacy Policy" updated="June 2026">
       <p>
-        This Privacy Policy explains what information IlliniSublease (&quot;we&quot;,
-        &quot;us&quot;) collects, how we use and store it, and who can see it. By using
-        this site you agree to this policy.
+        This Privacy Policy explains what information IlliniSublease, operated by
+        <strong> PushTangle LLC</strong> (&quot;we&quot;, &quot;us&quot;), collects, how we
+        use and store it, and who can see it. By using this site you agree to this policy.
       </p>
 
       <h2>What we collect</h2>

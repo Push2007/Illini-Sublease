@@ -7,16 +7,18 @@ export default function TermsPage() {
     <LegalShell title="Terms of Service" updated="June 2026">
       <p>
         These Terms of Service (&quot;Terms&quot;) are a binding agreement between you and
-        IlliniSublease. By creating an account or using this site, you agree to these Terms.
-        If you do not agree, do not use the site.
+        <strong> PushTangle LLC</strong>, which operates the IlliniSublease website
+        (&quot;IlliniSublease&quot;, &quot;we&quot;, &quot;us&quot;). By creating an account
+        or using this site, you agree to these Terms. If you do not agree, do not use the site.
       </p>
 
       <h2>1. We are only a listing board</h2>
       <p>
-        IlliniSublease is a platform that lets University of Illinois students post and
-        browse sublease listings. <strong>We do not own, manage, inspect, or control any
-        apartment.</strong> We are not a landlord, broker, real-estate agent, or property
-        manager. We are not a party to any rental or sublease agreement between users.
+        IlliniSublease is a platform operated by PushTangle LLC that lets University of
+        Illinois students post and browse sublease listings. <strong>We do not own, manage,
+        inspect, or control any apartment.</strong> We are not a landlord, broker,
+        real-estate agent, or property manager. We are not a party to any rental or
+        sublease agreement between users.
       </p>
 
       <h2>2. User content and your own risk</h2>

@@ -37,8 +37,9 @@ export function SiteFooter() {
         </div>
 
         <p className="mt-6 border-t border-zinc-100 pt-4 text-xs text-zinc-400">
-          &copy; {new Date().getFullYear()} IlliniSublease. Not affiliated with or
-          endorsed by the University of Illinois. All listings are user-generated.
+          &copy; {new Date().getFullYear()} PushTangle LLC. IlliniSublease is operated by
+          PushTangle LLC and is not affiliated with or endorsed by the University of
+          Illinois. All listings are user-generated.
         </p>
       </div>
     </footer>
