@@ -3,7 +3,7 @@
 import { AuthError } from "next-auth";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { prisma } from "@/lib/db";
 import { isAllowedEmail, normalizeEmail, ALLOWED_EMAIL_DOMAIN } from "@/lib/auth-domain";
 import { sendVerificationCode } from "@/lib/email";
@@ -139,4 +139,27 @@ export async function verifyCode(
   await prisma.verificationCode.deleteMany({ where: { email } });
 
   redirect("/login?verified=1");
+}
+
+/**
+ * Permanently deletes the signed-in user's account and all associated data
+ * (their listings, listing photos, and any pending verification codes). Reports
+ * they filed against other listings are anonymized. Then signs them out.
+ */
+export async function deleteAccount() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  const userId = session.user.id;
+  const email = session.user.email ? normalizeEmail(session.user.email) : null;
+
+  // Listings (and their images) cascade-delete via the schema relations.
+  await prisma.user.delete({ where: { id: userId } }).catch(() => {});
+  if (email) {
+    await prisma.verificationCode.deleteMany({ where: { email } });
+  }
+
+  await signOut({ redirectTo: "/" });
 }

@@ -8,6 +8,7 @@ import { formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ListingManageActions } from "@/components/listing-manage-actions";
+import { DeleteAccount } from "@/components/delete-account";
 
 export const metadata = { title: "My listings — IlliniSublease" };
 
@@ -76,6 +77,10 @@ export default async function DashboardPage() {
           ))}
         </div>
       )}
+
+      <section className="mt-12 border-t border-zinc-200 pt-8">
+        <DeleteAccount />
+      </section>
     </main>
   );
 }
