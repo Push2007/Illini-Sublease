@@ -79,7 +79,15 @@ export async function requestSignup(
     },
   });
 
-  await sendVerificationCode(email, code);
+  const result = await sendVerificationCode(email, code);
+  if (!result.delivered) {
+    // Email couldn't be delivered (e.g. Resend test-mode restriction). The code
+    // is logged to the server console so you can still verify during testing.
+    console.warn(
+      `[signup] Verification email NOT delivered to ${email}. Use this code to verify: ${code}` +
+        (result.error ? ` (reason: ${result.error})` : "")
+    );
+  }
   redirect(`/verify?email=${encodeURIComponent(email)}`);
 }
 

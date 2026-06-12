@@ -5,10 +5,34 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
 import { isAllowedEmail, normalizeEmail } from "@/lib/auth-domain";
 
+const useSecureCookies = process.env.NODE_ENV === "production";
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
+  // App-specific cookie name so we never collide with another Auth.js app on the
+  // same host (e.g. localhost:3000), which would cause "no matching decryption
+  // secret" errors from a stale cookie encrypted with a different AUTH_SECRET.
+  cookies: {
+    sessionToken: {
+      name: `${useSecureCookies ? "__Secure-" : ""}illinisublease.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: useSecureCookies,
+      },
+    },
+  },
+  logger: {
+    error(error) {
+      // A stale/foreign session cookie that can't be decrypted is benign — the
+      // user is simply treated as logged out. Don't spam the console with it.
+      if (error?.name === "JWTSessionError") return;
+      console.error(error);
+    },
+  },
   providers: [
     Google,
     Credentials({

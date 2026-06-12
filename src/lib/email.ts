@@ -6,19 +6,42 @@ const from = process.env.EMAIL_FROM?.trim() || "UIUC Sublease <onboarding@resend
 const resend = apiKey ? new Resend(apiKey) : null;
 
 type SendArgs = { to: string; subject: string; html: string; text?: string };
+type SendResult = { delivered: boolean; error?: string };
 
-async function send({ to, subject, html, text }: SendArgs) {
+function logToConsole(to: string, subject: string, body: string, reason: string) {
+  console.log("\n========== EMAIL (console fallback) ==========");
+  console.log(`Reason:  ${reason}`);
+  console.log(`To:      ${to}`);
+  console.log(`Subject: ${subject}`);
+  console.log(body);
+  console.log("==============================================\n");
+}
+
+async function send({ to, subject, html, text }: SendArgs): Promise<SendResult> {
+  const body = text ?? html.replace(/<[^>]+>/g, "");
+
   if (!resend) {
-    // Dev fallback: no Resend key configured — log so flows still work locally.
-    console.log("\n========== EMAIL (dev console) ==========");
-    console.log(`To:      ${to}`);
-    console.log(`Subject: ${subject}`);
-    console.log(text ?? html.replace(/<[^>]+>/g, ""));
-    console.log("=========================================\n");
-    return { delivered: false as const };
+    logToConsole(to, subject, body, "no RESEND_API_KEY set");
+    return { delivered: false };
   }
-  await resend.emails.send({ from, to, subject, html, text });
-  return { delivered: true as const };
+
+  try {
+    const { error } = await resend.emails.send({ from, to, subject, html, text });
+    if (error) {
+      // Common cause: Resend test mode (onboarding@resend.dev) only delivers to
+      // your own account email. Verify a domain and set EMAIL_FROM to send freely.
+      const message = `${error.name}: ${error.message}`;
+      console.error(`[email] Resend rejected send to ${to}: ${message}`);
+      logToConsole(to, subject, body, `Resend error — ${message}`);
+      return { delivered: false, error: message };
+    }
+    return { delivered: true };
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error(`[email] Failed to send to ${to}: ${message}`);
+    logToConsole(to, subject, body, `exception — ${message}`);
+    return { delivered: false, error: message };
+  }
 }
 
 export async function sendVerificationCode(to: string, code: string) {
