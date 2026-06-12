@@ -17,7 +17,7 @@ export default async function SignupPage() {
           Join IlliniSublease
         </h1>
         <p className="mt-1 text-sm text-zinc-500">
-          Verified UIUC students only (@illinois.edu)).
+          Verified UIUC students only (@illinois.edu).
         </p>
 
         <div className="mt-6">
