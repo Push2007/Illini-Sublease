@@ -11,7 +11,6 @@ import {
   CAMPUS_AREAS,
   PRICE_MAX,
   PRICE_MIN,
-  ROOM_LAYOUTS,
   ROOMMATE_GENDER_OPTIONS,
   TERMS,
 } from "@/lib/constants";
@@ -20,7 +19,7 @@ export type SearchFilterValues = {
   q?: string;
   campus: string[];
   term?: string;
-  layout: string[];
+  layout: string;
   priceMin: number;
   priceMax: number;
   bus: string[];
@@ -100,17 +99,10 @@ export function SearchFilters({ initial }: { initial: SearchFilterValues }) {
         </div>
       </fieldset>
 
-      <fieldset>
-        <legend className="text-sm font-semibold text-zinc-800">Room layout</legend>
-        <div className="mt-2 space-y-1.5">
-          {ROOM_LAYOUTS.map((r) => (
-            <label key={r.value} className="flex items-center gap-2 text-sm text-zinc-700">
-              <input type="checkbox" name="layout" value={r.value} defaultChecked={initial.layout.includes(r.value)} className="accent-[#E84A27]" />
-              {r.label}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <div>
+        <Label htmlFor="layout">Room layout</Label>
+        <Input id="layout" name="layout" defaultValue={initial.layout} placeholder="e.g. 4x4, 2x2" className="mt-1.5" />
+      </div>
 
       <fieldset>
         <legend className="flex items-center gap-1.5 text-sm font-semibold text-zinc-800">

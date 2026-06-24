@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import type { CampusArea, RoomLayout, Term } from "@/generated/prisma/enums";
+import type { CampusArea, Term } from "@/generated/prisma/enums";
 import type { Prisma } from "@/generated/prisma/client";
 
 export type ListingFilters = {
@@ -8,7 +8,7 @@ export type ListingFilters = {
   term?: Term;
   priceMin?: number;
   priceMax?: number;
-  layouts?: RoomLayout[];
+  layout?: string;
   busRoutes?: string[];
   petFriendly?: boolean;
   inUnitLaundry?: boolean;
@@ -34,7 +34,7 @@ export async function searchListings(filters: ListingFilters) {
 
   if (filters.campusAreas?.length) where.campusArea = { in: filters.campusAreas };
   if (filters.term) where.term = filters.term;
-  if (filters.layouts?.length) where.roomLayout = { in: filters.layouts };
+  if (filters.layout) where.roomLayout = { contains: filters.layout, mode: "insensitive" };
 
   if (filters.priceMin != null || filters.priceMax != null) {
     where.priceMonthly = {

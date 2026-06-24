@@ -42,3 +42,8 @@ export type ListingImage = Prisma.ListingImageModel
  * 
  */
 export type Report = Prisma.ReportModel
+/**
+ * Model RateLimit
+ * 
+ */
+export type RateLimit = Prisma.RateLimitModel

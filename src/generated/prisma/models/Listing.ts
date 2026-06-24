@@ -50,7 +50,7 @@ export type ListingMinAggregateOutputType = {
   campusArea: $Enums.CampusArea | null
   term: $Enums.Term | null
   priceMonthly: number | null
-  roomLayout: $Enums.RoomLayout | null
+  roomLayout: string | null
   bedrooms: number | null
   address: string | null
   latitude: number | null
@@ -78,7 +78,7 @@ export type ListingMaxAggregateOutputType = {
   campusArea: $Enums.CampusArea | null
   term: $Enums.Term | null
   priceMonthly: number | null
-  roomLayout: $Enums.RoomLayout | null
+  roomLayout: string | null
   bedrooms: number | null
   address: string | null
   latitude: number | null
@@ -325,12 +325,12 @@ export type ListingGroupByOutputType = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude: number | null
+  longitude: number | null
+  distanceMiles: number | null
   busRoutes: string[]
   petFriendly: boolean
   inUnitLaundry: boolean
@@ -377,12 +377,12 @@ export type ListingWhereInput = {
   campusArea?: Prisma.EnumCampusAreaFilter<"Listing"> | $Enums.CampusArea
   term?: Prisma.EnumTermFilter<"Listing"> | $Enums.Term
   priceMonthly?: Prisma.IntFilter<"Listing"> | number
-  roomLayout?: Prisma.EnumRoomLayoutFilter<"Listing"> | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFilter<"Listing"> | string
   bedrooms?: Prisma.IntNullableFilter<"Listing"> | number | null
   address?: Prisma.StringFilter<"Listing"> | string
-  latitude?: Prisma.FloatFilter<"Listing"> | number
-  longitude?: Prisma.FloatFilter<"Listing"> | number
-  distanceMiles?: Prisma.FloatFilter<"Listing"> | number
+  latitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  distanceMiles?: Prisma.FloatNullableFilter<"Listing"> | number | null
   busRoutes?: Prisma.StringNullableListFilter<"Listing">
   petFriendly?: Prisma.BoolFilter<"Listing"> | boolean
   inUnitLaundry?: Prisma.BoolFilter<"Listing"> | boolean
@@ -412,9 +412,9 @@ export type ListingOrderByWithRelationInput = {
   roomLayout?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
-  distanceMiles?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  distanceMiles?: Prisma.SortOrderInput | Prisma.SortOrder
   busRoutes?: Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   inUnitLaundry?: Prisma.SortOrder
@@ -444,12 +444,12 @@ export type ListingWhereUniqueInput = Prisma.AtLeast<{
   campusArea?: Prisma.EnumCampusAreaFilter<"Listing"> | $Enums.CampusArea
   term?: Prisma.EnumTermFilter<"Listing"> | $Enums.Term
   priceMonthly?: Prisma.IntFilter<"Listing"> | number
-  roomLayout?: Prisma.EnumRoomLayoutFilter<"Listing"> | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFilter<"Listing"> | string
   bedrooms?: Prisma.IntNullableFilter<"Listing"> | number | null
   address?: Prisma.StringFilter<"Listing"> | string
-  latitude?: Prisma.FloatFilter<"Listing"> | number
-  longitude?: Prisma.FloatFilter<"Listing"> | number
-  distanceMiles?: Prisma.FloatFilter<"Listing"> | number
+  latitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  distanceMiles?: Prisma.FloatNullableFilter<"Listing"> | number | null
   busRoutes?: Prisma.StringNullableListFilter<"Listing">
   petFriendly?: Prisma.BoolFilter<"Listing"> | boolean
   inUnitLaundry?: Prisma.BoolFilter<"Listing"> | boolean
@@ -479,9 +479,9 @@ export type ListingOrderByWithAggregationInput = {
   roomLayout?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
-  distanceMiles?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  distanceMiles?: Prisma.SortOrderInput | Prisma.SortOrder
   busRoutes?: Prisma.SortOrder
   petFriendly?: Prisma.SortOrder
   inUnitLaundry?: Prisma.SortOrder
@@ -513,12 +513,12 @@ export type ListingScalarWhereWithAggregatesInput = {
   campusArea?: Prisma.EnumCampusAreaWithAggregatesFilter<"Listing"> | $Enums.CampusArea
   term?: Prisma.EnumTermWithAggregatesFilter<"Listing"> | $Enums.Term
   priceMonthly?: Prisma.IntWithAggregatesFilter<"Listing"> | number
-  roomLayout?: Prisma.EnumRoomLayoutWithAggregatesFilter<"Listing"> | $Enums.RoomLayout
+  roomLayout?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   bedrooms?: Prisma.IntNullableWithAggregatesFilter<"Listing"> | number | null
   address?: Prisma.StringWithAggregatesFilter<"Listing"> | string
-  latitude?: Prisma.FloatWithAggregatesFilter<"Listing"> | number
-  longitude?: Prisma.FloatWithAggregatesFilter<"Listing"> | number
-  distanceMiles?: Prisma.FloatWithAggregatesFilter<"Listing"> | number
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Listing"> | number | null
+  distanceMiles?: Prisma.FloatNullableWithAggregatesFilter<"Listing"> | number | null
   busRoutes?: Prisma.StringNullableListFilter<"Listing">
   petFriendly?: Prisma.BoolWithAggregatesFilter<"Listing"> | boolean
   inUnitLaundry?: Prisma.BoolWithAggregatesFilter<"Listing"> | boolean
@@ -541,12 +541,12 @@ export type ListingCreateInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -573,12 +573,12 @@ export type ListingUncheckedCreateInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -603,12 +603,12 @@ export type ListingUpdateInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -635,12 +635,12 @@ export type ListingUncheckedUpdateInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -666,12 +666,12 @@ export type ListingCreateManyInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -694,12 +694,12 @@ export type ListingUpdateManyMutationInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -723,12 +723,12 @@ export type ListingUncheckedUpdateManyInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -922,10 +922,6 @@ export type EnumTermFieldUpdateOperationsInput = {
   set?: $Enums.Term
 }
 
-export type EnumRoomLayoutFieldUpdateOperationsInput = {
-  set?: $Enums.RoomLayout
-}
-
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -934,8 +930,8 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
@@ -990,12 +986,12 @@ export type ListingCreateWithoutUserInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1020,12 +1016,12 @@ export type ListingUncheckedCreateWithoutUserInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1080,12 +1076,12 @@ export type ListingScalarWhereInput = {
   campusArea?: Prisma.EnumCampusAreaFilter<"Listing"> | $Enums.CampusArea
   term?: Prisma.EnumTermFilter<"Listing"> | $Enums.Term
   priceMonthly?: Prisma.IntFilter<"Listing"> | number
-  roomLayout?: Prisma.EnumRoomLayoutFilter<"Listing"> | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFilter<"Listing"> | string
   bedrooms?: Prisma.IntNullableFilter<"Listing"> | number | null
   address?: Prisma.StringFilter<"Listing"> | string
-  latitude?: Prisma.FloatFilter<"Listing"> | number
-  longitude?: Prisma.FloatFilter<"Listing"> | number
-  distanceMiles?: Prisma.FloatFilter<"Listing"> | number
+  latitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  distanceMiles?: Prisma.FloatNullableFilter<"Listing"> | number | null
   busRoutes?: Prisma.StringNullableListFilter<"Listing">
   petFriendly?: Prisma.BoolFilter<"Listing"> | boolean
   inUnitLaundry?: Prisma.BoolFilter<"Listing"> | boolean
@@ -1108,12 +1104,12 @@ export type ListingCreateWithoutImagesInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1139,12 +1135,12 @@ export type ListingUncheckedCreateWithoutImagesInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1184,12 +1180,12 @@ export type ListingUpdateWithoutImagesInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1215,12 +1211,12 @@ export type ListingUncheckedUpdateWithoutImagesInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1244,12 +1240,12 @@ export type ListingCreateWithoutReportsInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1275,12 +1271,12 @@ export type ListingUncheckedCreateWithoutReportsInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1320,12 +1316,12 @@ export type ListingUpdateWithoutReportsInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1351,12 +1347,12 @@ export type ListingUncheckedUpdateWithoutReportsInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1380,12 +1376,12 @@ export type ListingCreateManyUserInput = {
   campusArea: $Enums.CampusArea
   term: $Enums.Term
   priceMonthly: number
-  roomLayout: $Enums.RoomLayout
+  roomLayout: string
   bedrooms?: number | null
   address: string
-  latitude: number
-  longitude: number
-  distanceMiles: number
+  latitude?: number | null
+  longitude?: number | null
+  distanceMiles?: number | null
   busRoutes?: Prisma.ListingCreatebusRoutesInput | string[]
   petFriendly?: boolean
   inUnitLaundry?: boolean
@@ -1408,12 +1404,12 @@ export type ListingUpdateWithoutUserInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1438,12 +1434,12 @@ export type ListingUncheckedUpdateWithoutUserInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1468,12 +1464,12 @@ export type ListingUncheckedUpdateManyWithoutUserInput = {
   campusArea?: Prisma.EnumCampusAreaFieldUpdateOperationsInput | $Enums.CampusArea
   term?: Prisma.EnumTermFieldUpdateOperationsInput | $Enums.Term
   priceMonthly?: Prisma.IntFieldUpdateOperationsInput | number
-  roomLayout?: Prisma.EnumRoomLayoutFieldUpdateOperationsInput | $Enums.RoomLayout
+  roomLayout?: Prisma.StringFieldUpdateOperationsInput | string
   bedrooms?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
-  distanceMiles?: Prisma.FloatFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   busRoutes?: Prisma.ListingUpdatebusRoutesInput | string[]
   petFriendly?: Prisma.BoolFieldUpdateOperationsInput | boolean
   inUnitLaundry?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1680,12 +1676,12 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     campusArea: $Enums.CampusArea
     term: $Enums.Term
     priceMonthly: number
-    roomLayout: $Enums.RoomLayout
+    roomLayout: string
     bedrooms: number | null
     address: string
-    latitude: number
-    longitude: number
-    distanceMiles: number
+    latitude: number | null
+    longitude: number | null
+    distanceMiles: number | null
     busRoutes: string[]
     petFriendly: boolean
     inUnitLaundry: boolean
@@ -2132,7 +2128,7 @@ export interface ListingFieldRefs {
   readonly campusArea: Prisma.FieldRef<"Listing", 'CampusArea'>
   readonly term: Prisma.FieldRef<"Listing", 'Term'>
   readonly priceMonthly: Prisma.FieldRef<"Listing", 'Int'>
-  readonly roomLayout: Prisma.FieldRef<"Listing", 'RoomLayout'>
+  readonly roomLayout: Prisma.FieldRef<"Listing", 'String'>
   readonly bedrooms: Prisma.FieldRef<"Listing", 'Int'>
   readonly address: Prisma.FieldRef<"Listing", 'String'>
   readonly latitude: Prisma.FieldRef<"Listing", 'Float'>

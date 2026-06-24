@@ -2,13 +2,12 @@ import { SearchFilters, type SearchFilterValues } from "@/components/search-filt
 import { ListingCard } from "@/components/listing-card";
 import { searchListings } from "@/lib/listings";
 import { PRICE_MAX, PRICE_MIN } from "@/lib/constants";
-import type { CampusArea, RoomLayout, Term } from "@/generated/prisma/enums";
+import type { CampusArea, Term } from "@/generated/prisma/enums";
 
 export const metadata = { title: "Search subleases — IlliniSublease" };
 
 const CAMPUS = ["NORTH", "SOUTH", "URBANA", "CHAMPAIGN"];
 const TERMS = ["FALL", "SPRING", "SUMMER"];
-const LAYOUTS = ["STUDIO", "ONE_BED", "TWO_BED", "ROOM_IN_SHARED"];
 
 type SP = Record<string, string | string[] | undefined>;
 const arr = (v: string | string[] | undefined) => (Array.isArray(v) ? v : v ? [v] : []);
@@ -18,7 +17,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const sp = await searchParams;
 
   const campus = arr(sp.campus).filter((c) => CAMPUS.includes(c));
-  const layout = arr(sp.layout).filter((l) => LAYOUTS.includes(l));
+  const layout = (one(sp.layout) || "").trim();
   const bus = arr(sp.bus);
   const term = TERMS.includes(one(sp.term) ?? "") ? (one(sp.term) as Term) : undefined;
   const priceMin = Number(one(sp.priceMin)) || PRICE_MIN;
@@ -44,7 +43,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     q,
     campusAreas: campus as CampusArea[],
     term,
-    layouts: layout as RoomLayout[],
+    layout: layout || undefined,
     busRoutes: bus,
     priceMin,
     priceMax,

@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { escapeHtml } from "@/lib/validation";
 
 const apiKey = process.env.RESEND_API_KEY?.trim();
 const from = process.env.EMAIL_FROM?.trim() || "UIUC Sublease <onboarding@resend.dev>";
@@ -70,6 +71,11 @@ export async function sendReportNotification(
     console.log(`[REPORT] Listing ${listingId} ("${listingTitle}") reported: ${reason} (by ${reporterEmail ?? "unknown"})`);
     return { delivered: false as const };
   }
+  // Escape user-controlled values before embedding in HTML email.
+  const safeTitle = escapeHtml(listingTitle);
+  const safeReason = escapeHtml(reason);
+  const safeReporter = escapeHtml(reporterEmail ?? "unknown");
+  const safeId = escapeHtml(listingId);
   return send({
     to: admin,
     subject: `[Report] Listing flagged: ${listingTitle}`,
@@ -77,10 +83,10 @@ export async function sendReportNotification(
     html: `
       <div style="font-family:system-ui,sans-serif">
         <h3>Listing reported</h3>
-        <p><strong>Listing:</strong> ${listingTitle} (${listingId})</p>
-        <p><strong>Reason:</strong> ${reason}</p>
-        <p><strong>Reporter:</strong> ${reporterEmail ?? "unknown"}</p>
-        <p><a href="/listings/${listingId}">View listing</a></p>
+        <p><strong>Listing:</strong> ${safeTitle} (${safeId})</p>
+        <p><strong>Reason:</strong> ${safeReason}</p>
+        <p><strong>Reporter:</strong> ${safeReporter}</p>
+        <p><a href="/listings/${encodeURIComponent(listingId)}">View listing</a></p>
       </div>`,
   });
 }

@@ -59,13 +59,6 @@ enum Term {
   SUMMER
 }
 
-enum RoomLayout {
-  STUDIO
-  ONE_BED
-  TWO_BED
-  ROOM_IN_SHARED // a single room inside a shared apartment
-}
-
 enum ListingStatus {
   ACTIVE
   RENTED
@@ -81,12 +74,14 @@ model Listing {
   campusArea      CampusArea
   term            Term
   priceMonthly    Int
-  roomLayout      RoomLayout
+  // Free-text room layout, e.g. "4x4" (beds x baths), "4x2", "studio".
+  roomLayout      String
   bedrooms        Int?
   address         String
-  latitude        Float
-  longitude       Float
-  distanceMiles   Float
+  // Optional: addresses are now free-text (no geocoding / distance check).
+  latitude        Float?
+  longitude       Float?
+  distanceMiles   Float?
   busRoutes       String[]
   petFriendly     Boolean       @default(false)
   inUnitLaundry   Boolean       @default(false)
@@ -128,4 +123,16 @@ model Report {
   reporter   User?    @relation(fields: [reporterId], references: [id], onDelete: SetNull)
   reason     String
   createdAt  DateTime @default(now())
+}
+
+// Fixed-window rate-limit counters, shared across serverless instances.
+// `key` encodes the scope + client identifier + time bucket. Expired rows are
+// purged by the scheduled cleanup job.
+model RateLimit {
+  key       String   @id
+  count     Int      @default(0)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
 }

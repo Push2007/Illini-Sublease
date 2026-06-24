@@ -35,7 +35,7 @@ export function ListingCard({ listing }: { listing: ListingWithImages }) {
         <h3 className="line-clamp-1 font-semibold text-zinc-900">{listing.title}</h3>
         <p className="flex items-center gap-1 text-xs text-zinc-500">
           <MapPin className="h-3.5 w-3.5" />
-          {campusAreaLabel(listing.campusArea)} · {listing.distanceMiles.toFixed(1)} mi from campus
+          {campusAreaLabel(listing.campusArea)}
         </p>
 
         <div className="flex flex-wrap gap-1.5">

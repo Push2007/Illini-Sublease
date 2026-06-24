@@ -16,7 +16,7 @@ export default async function HomePage() {
             <BadgeCheck className="h-4 w-4 text-[#E84A27]" /> Verified @illinois.edu students only
           </p>
           <h1 className="mt-5 max-w-2xl text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Find or fill a UIUC sublease — student to student.
+            Find or fill a UIUC sublease  student to student.
           </h1>
           <p className="mt-4 max-w-xl text-lg text-zinc-300">
             Leaving for a semester or an internship? List your apartment. Coming to
@@ -49,7 +49,7 @@ export default async function HomePage() {
       <section className="border-b border-zinc-200 bg-white">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6">
           <Feature icon={<ShieldCheck className="h-5 w-5" />} title="UIUC-verified" desc="Sign in with your @illinois.edu email or Google. No randoms from the internet." />
-          <Feature icon={<MapPin className="h-5 w-5" />} title="Near campus" desc="Every listing is within 20 miles of 901 W. Illinois St — we verify the address." />
+          <Feature icon={<MapPin className="h-5 w-5" />} title="Near campus" desc="Every listing is within 20 miles of 901 W. Illinois St. We verify the address." />
           <Feature icon={<Bus className="h-5 w-5" />} title="Filter by needs" desc="Price, term, layout, MTD bus routes, pets, laundry, parking, and more." />
         </div>
       </section>

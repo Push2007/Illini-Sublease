@@ -28,16 +28,6 @@ export const Term = {
 export type Term = (typeof Term)[keyof typeof Term]
 
 
-export const RoomLayout = {
-  STUDIO: 'STUDIO',
-  ONE_BED: 'ONE_BED',
-  TWO_BED: 'TWO_BED',
-  ROOM_IN_SHARED: 'ROOM_IN_SHARED'
-} as const
-
-export type RoomLayout = (typeof RoomLayout)[keyof typeof RoomLayout]
-
-
 export const ListingStatus = {
   ACTIVE: 'ACTIVE',
   RENTED: 'RENTED',

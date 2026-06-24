@@ -14,7 +14,7 @@ import {
 import { auth } from "@/auth";
 import { getListingById } from "@/lib/listings";
 import { campusAreaLabel, roomLayoutLabel, termLabel } from "@/lib/constants";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ListingGallery } from "@/components/listing-gallery";
 import { RevealContact } from "@/components/reveal-contact";
@@ -32,7 +32,7 @@ export default async function ListingDetailPage({
   const isLoggedIn = Boolean(session?.user?.id);
   const fmt = (d: Date | null) =>
     d ? new Date(d).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : null;
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${listing.latitude},${listing.longitude}`;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(listing.address)}`;
 
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
@@ -63,7 +63,7 @@ export default async function ListingDetailPage({
               rel="noopener noreferrer"
               className="mt-1 inline-flex items-center gap-1 text-sm text-[#E84A27] hover:underline"
             >
-              View on map ({listing.distanceMiles.toFixed(1)} mi from campus) <ExternalLink className="h-3.5 w-3.5" />
+              View on map <ExternalLink className="h-3.5 w-3.5" />
             </a>
 
             <div className="mt-4 flex flex-wrap gap-2">
@@ -82,6 +82,8 @@ export default async function ListingDetailPage({
                 <Perk
                   icon={<Calendar className="h-4 w-4" />}
                   label={`${fmt(listing.availableFrom) ?? "?"} → ${fmt(listing.availableTo) ?? "?"}`}
+                  className="col-span-2 sm:col-span-3"
+                  noTruncate
                 />
               )}
             </div>
@@ -142,11 +144,26 @@ export default async function ListingDetailPage({
   );
 }
 
-function Perk({ icon, label }: { icon: React.ReactNode; label: string }) {
+function Perk({
+  icon,
+  label,
+  className,
+  noTruncate,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  className?: string;
+  noTruncate?: boolean;
+}) {
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700">
-      <span className="text-[#E84A27]">{icon}</span>
-      <span className="truncate">{label}</span>
+    <div
+      className={cn(
+        "flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700",
+        className
+      )}
+    >
+      <span className="shrink-0 text-[#E84A27]">{icon}</span>
+      <span className={noTruncate ? "whitespace-nowrap" : "truncate"}>{label}</span>
     </div>
   );
 }
