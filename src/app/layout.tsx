@@ -26,6 +26,7 @@ export default function RootLayout({
         <SiteHeader />
         <div className="flex flex-1 flex-col">{children}</div>
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
