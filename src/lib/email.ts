@@ -45,21 +45,6 @@ async function send({ to, subject, html, text }: SendArgs): Promise<SendResult> 
   }
 }
 
-export async function sendVerificationCode(to: string, code: string) {
-  return send({
-    to,
-    subject: "Your UIUC Sublease verification code",
-    text: `Your verification code is ${code}. It expires in 15 minutes.`,
-    html: `
-      <div style="font-family:system-ui,sans-serif;max-width:480px;margin:auto">
-        <h2 style="color:#13294B">UIUC Sublease</h2>
-        <p>Welcome! Use this code to verify your <strong>@illinois.edu</strong> email:</p>
-        <p style="font-size:32px;font-weight:700;letter-spacing:6px;color:#E84A27">${code}</p>
-        <p style="color:#666">This code expires in 15 minutes. If you didn't request it, ignore this email.</p>
-      </div>`,
-  });
-}
-
 export async function sendReportNotification(
   listingId: string,
   listingTitle: string,

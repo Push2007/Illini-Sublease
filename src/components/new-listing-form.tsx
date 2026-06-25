@@ -144,7 +144,7 @@ export function NewListingForm({ userEmail }: { userEmail: string }) {
           <div>
             <Label htmlFor="address">Apartment address</Label>
             <Input id="address" name="address" defaultValue={v?.address} placeholder="509 E Green St, Champaign, IL" className="mt-1.5" required />
-            <p className="mt-1 text-xs text-zinc-500">Must be within 20 miles of campus. We verify the location.</p>
+            <p className="mt-1 text-xs text-zinc-500">Street address or building name — however you&apos;d tell a friend to find it.</p>
             {err("address") && <p className="mt-1 text-xs text-red-600">{err("address")}</p>}
           </div>
           <div>

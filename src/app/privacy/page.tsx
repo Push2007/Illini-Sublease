@@ -13,14 +13,13 @@ export default function PrivacyPage() {
 
       <h2>What we collect</h2>
       <ul>
-        <li><strong>Account info:</strong> your name and @illinois.edu email address (and, for password accounts, a securely hashed password — we never store your raw password).</li>
+        <li><strong>Account info:</strong> your name and @illinois.edu email address from Google sign-in.</li>
         <li><strong>Listing info:</strong> the apartment details, address, photos, price, and the contact email and phone number you choose to provide.</li>
         <li><strong>Reports:</strong> if you report a listing, we store your account id and the reason.</li>
       </ul>
 
       <h2>How we store it safely</h2>
       <ul>
-        <li>Passwords are hashed with <strong>bcrypt</strong>; they are never stored or transmitted in plain text.</li>
         <li>Data is stored in a managed PostgreSQL database protected by access credentials kept in server-side environment variables.</li>
         <li>All traffic is encrypted over HTTPS/SSL.</li>
       </ul>

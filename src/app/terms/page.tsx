@@ -64,7 +64,7 @@ export default function TermsPage() {
       <h2>7. Eligibility</h2>
       <p>
         You must be a current University of Illinois affiliate with a valid @illinois.edu
-        email to register. You are responsible for keeping your login credentials secure.
+        Google account to sign in. Do not share access to your Google account with others.
       </p>
 
       <h2>8. Changes</h2>

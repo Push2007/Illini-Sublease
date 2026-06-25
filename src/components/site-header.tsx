@@ -45,14 +45,9 @@ export async function SiteHeader() {
               </div>
             </>
           ) : (
-            <>
-              <Button asChild variant="ghost" size="sm">
-                <Link href="/login">Log in</Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link href="/signup">Sign up</Link>
-              </Button>
-            </>
+            <Button asChild size="sm">
+              <Link href="/login">Log in with Google</Link>
+            </Button>
           )}
         </nav>
       </div>

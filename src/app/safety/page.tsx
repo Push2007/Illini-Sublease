@@ -22,8 +22,8 @@ export default function SafetyPage() {
 
       <h2>Protect your account</h2>
       <ul>
-        <li>Use a strong, unique password. We store it hashed with bcrypt and never see it.</li>
-        <li>Only enter your password on the real site over HTTPS.</li>
+        <li>Sign in only through the official <strong>Continue with Google</strong> button on this site.</li>
+        <li>Use your real @illinois.edu Google account — we never ask for a separate password.</li>
       </ul>
 
       <h2>See something wrong?</h2>
