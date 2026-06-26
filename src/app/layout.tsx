@@ -4,11 +4,13 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Analytics } from "@vercel/analytics/next";
+import { getSiteUrl } from "@/lib/site-url";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: "IlliniSublease — UIUC student sublease matchmaking",
   description:
     "Find and post short-term apartment subleases near the University of Illinois Urbana-Champaign. Verified @illinois.edu students only.",
