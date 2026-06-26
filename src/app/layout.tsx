@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "IlliniSublease — UIUC student sublease matchmaking",
   description:
     "Find and post short-term apartment subleases near the University of Illinois Urbana-Champaign. Verified @illinois.edu students only.",
+    verification: {
+      google: "DgsW_IELG3RBiWOy-2oGEfb9HujDOvY2dpp8htVrlb4", 
+    },
 };
 
 export default function RootLayout({

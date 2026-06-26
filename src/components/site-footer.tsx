@@ -12,6 +12,15 @@ export function SiteFooter() {
               Urbana-Champaign. We are not a broker or landlord and we never handle
               payments. Verify everything before you pay anyone.
             </p>
+            <p className="mt-3 text-xs text-zinc-500">
+              Site administrator:{" "}
+              <a
+                href="mailto:pushkar2@illinois.edu"
+                className="font-medium text-[#13294B] hover:underline"
+              >
+                pushkar2@illinois.edu
+              </a>
+            </p>
           </div>
 
           <nav className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm">

@@ -11,6 +11,7 @@ export const TERMS: { value: Term; label: string }[] = [
   { value: "FALL", label: "Fall semester" },
   { value: "SPRING", label: "Spring semester" },
   { value: "SUMMER", label: "Summer term" },
+  { value: "WINTER", label: "Winter term" },
 ];
 
 /** Popular Champaign-Urbana MTD bus lines near campus. */
@@ -40,8 +41,6 @@ export const ROOMMATE_GENDER_OPTIONS = [
 
 export const PRICE_MIN = 200;
 export const PRICE_MAX = 3000;
-
-export const CAMPUS_RADIUS_MILES = 20;
 
 export function campusAreaLabel(value: CampusArea) {
   return CAMPUS_AREAS.find((c) => c.value === value)?.label ?? value;

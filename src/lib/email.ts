@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { escapeHtml } from "@/lib/validation";
+import { escapeHtml, sanitizeSubjectLine } from "@/lib/validation";
 
 const apiKey = process.env.RESEND_API_KEY?.trim();
 const from = process.env.EMAIL_FROM?.trim() || "UIUC Sublease <onboarding@resend.dev>";
@@ -61,9 +61,10 @@ export async function sendReportNotification(
   const safeReason = escapeHtml(reason);
   const safeReporter = escapeHtml(reporterEmail ?? "unknown");
   const safeId = escapeHtml(listingId);
+  const subjectTitle = sanitizeSubjectLine(listingTitle);
   return send({
     to: admin,
-    subject: `[Report] Listing flagged: ${listingTitle}`,
+    subject: `[Report] Listing flagged: ${subjectTitle}`,
     text: `Listing ${listingId} ("${listingTitle}") was reported.\nReason: ${reason}\nReporter: ${reporterEmail ?? "unknown"}`,
     html: `
       <div style="font-family:system-ui,sans-serif">

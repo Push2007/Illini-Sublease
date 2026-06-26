@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { isAllowedEmail } from "@/lib/auth-domain";
 import { ipFromHeaders, rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
+import { cleanText, sanitizeFilename } from "@/lib/validation";
 
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const ALLOWED_CONTENT_TYPES = [
@@ -37,10 +38,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     const json = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async () => {
+      onBeforeGenerateToken: async (pathname) => {
         const session = await auth();
         if (!session?.user?.id || !isAllowedEmail(session.user.email)) {
           throw new Error("You must be signed in with your @illinois.edu account to upload.");
+        }
+        if (cleanText(pathname) !== pathname || pathname !== sanitizeFilename(pathname)) {
+          throw new Error("Invalid file name.");
         }
         return {
           allowedContentTypes: ALLOWED_CONTENT_TYPES,

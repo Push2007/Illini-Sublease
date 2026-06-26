@@ -14,6 +14,8 @@ import {
 import { auth } from "@/auth";
 import { getListingById } from "@/lib/listings";
 import { campusAreaLabel, roomLayoutLabel, termLabel } from "@/lib/constants";
+import { buildGoogleMapsUrl } from "@/lib/maps";
+import { uuidSchema } from "@/lib/validation";
 import { formatPrice, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ListingGallery } from "@/components/listing-gallery";
@@ -26,13 +28,14 @@ export default async function ListingDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  if (!uuidSchema.safeParse(id).success) notFound();
   const [listing, session] = await Promise.all([getListingById(id), auth()]);
   if (!listing) notFound();
 
   const isLoggedIn = Boolean(session?.user?.id);
   const fmt = (d: Date | null) =>
     d ? new Date(d).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : null;
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(listing.address)}`;
+  const mapUrl = buildGoogleMapsUrl(listing);
 
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">

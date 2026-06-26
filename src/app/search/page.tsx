@@ -1,56 +1,42 @@
 import { SearchFilters, type SearchFilterValues } from "@/components/search-filters";
 import { ListingCard } from "@/components/listing-card";
 import { searchListings } from "@/lib/listings";
-import { PRICE_MAX, PRICE_MIN } from "@/lib/constants";
-import type { CampusArea, Term } from "@/generated/prisma/enums";
+import { parseSearchParams } from "@/lib/validation";
 
 export const metadata = { title: "Search subleases — IlliniSublease" };
 
-const CAMPUS = ["NORTH", "SOUTH", "URBANA", "CHAMPAIGN"];
-const TERMS = ["FALL", "SPRING", "SUMMER"];
-
 type SP = Record<string, string | string[] | undefined>;
-const arr = (v: string | string[] | undefined) => (Array.isArray(v) ? v : v ? [v] : []);
-const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-
-  const campus = arr(sp.campus).filter((c) => CAMPUS.includes(c));
-  const layout = (one(sp.layout) || "").trim();
-  const bus = arr(sp.bus);
-  const term = TERMS.includes(one(sp.term) ?? "") ? (one(sp.term) as Term) : undefined;
-  const priceMin = Number(one(sp.priceMin)) || PRICE_MIN;
-  const priceMax = Number(one(sp.priceMax)) || PRICE_MAX;
-  const roommate = one(sp.roommate) || undefined;
-  const q = one(sp.q) || undefined;
+  const filters = parseSearchParams(sp);
 
   const filterValues: SearchFilterValues = {
-    q,
-    campus,
-    term,
-    layout,
-    priceMin,
-    priceMax,
-    bus,
-    pet: one(sp.pet) === "1",
-    laundry: one(sp.laundry) === "1",
-    parking: one(sp.parking) === "1",
-    roommate,
+    q: filters.q,
+    campus: filters.campus,
+    term: filters.term,
+    layout: filters.layout,
+    priceMin: filters.priceMin,
+    priceMax: filters.priceMax,
+    bus: filters.bus,
+    pet: filters.pet,
+    laundry: filters.laundry,
+    parking: filters.parking,
+    roommate: filters.roommate,
   };
 
   const listings = await searchListings({
-    q,
-    campusAreas: campus as CampusArea[],
-    term,
-    layout: layout || undefined,
-    busRoutes: bus,
-    priceMin,
-    priceMax,
-    petFriendly: filterValues.pet,
-    inUnitLaundry: filterValues.laundry,
-    parkingIncluded: filterValues.parking,
-    roommateGenders: roommate,
+    q: filters.q,
+    campusAreas: filters.campus,
+    term: filters.term,
+    layout: filters.layout || undefined,
+    busRoutes: filters.bus,
+    priceMin: filters.priceMin,
+    priceMax: filters.priceMax,
+    petFriendly: filters.pet,
+    inUnitLaundry: filters.laundry,
+    parkingIncluded: filters.parking,
+    roommateGenders: filters.roommate,
   });
 
   return (

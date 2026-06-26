@@ -16,6 +16,8 @@ import {
   ROOMMATE_GENDER_OPTIONS,
   TERMS,
 } from "@/lib/constants";
+import { AddressAutocomplete } from "@/components/address-autocomplete";
+import { sanitizeFilename } from "@/lib/validation";
 
 const selectClass =
   "mt-1.5 h-10 w-full rounded-lg border border-zinc-300 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E84A27]";
@@ -33,6 +35,24 @@ export function NewListingForm({ userEmail }: { userEmail: string }) {
   // Values echoed back by the server action so a failed submit keeps the
   // user's input (React 19 auto-resets uncontrolled forms after an action).
   const v = state?.values;
+  // Remount the form when the server echoes values — defaultValue/defaultChecked only
+  // apply on mount, so selects/checkboxes would otherwise reset after a failed submit.
+  const formKey = v
+    ? [
+        v.campusArea,
+        v.term,
+        v.roommateGenders,
+        v.title,
+        v.address,
+        v.latitude,
+        v.longitude,
+        v.busRoutes.join(","),
+        String(v.petFriendly),
+        String(v.inUnitLaundry),
+        String(v.parkingIncluded),
+        String(v.consentToShare),
+      ].join("\0")
+    : "new";
 
   const [images, setImages] = useState<UploadedImage[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -54,11 +74,12 @@ export function NewListingForm({ userEmail }: { userEmail: string }) {
     try {
       const uploaded: UploadedImage[] = [];
       for (const file of files.slice(0, remaining)) {
-        const blob = await upload(file.name, file, {
+        const safeName = sanitizeFilename(file.name);
+        const blob = await upload(safeName, file, {
           access: "public",
           handleUploadUrl: "/api/upload",
         });
-        uploaded.push({ url: blob.url, name: file.name });
+        uploaded.push({ url: blob.url, name: safeName });
       }
       setImages((prev) => [...prev, ...uploaded]);
     } catch (uploadErr) {
@@ -76,7 +97,7 @@ export function NewListingForm({ userEmail }: { userEmail: string }) {
   }
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form key={formKey} action={formAction} className="space-y-8">
       {/* Fair Housing warning */}
       <div className="rounded-xl border border-amber-300 bg-amber-50 p-4">
         <p className="flex items-center gap-2 text-sm font-bold text-amber-900">
@@ -143,9 +164,12 @@ export function NewListingForm({ userEmail }: { userEmail: string }) {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_140px]">
           <div>
             <Label htmlFor="address">Apartment address</Label>
-            <Input id="address" name="address" defaultValue={v?.address} placeholder="509 E Green St, Champaign, IL" className="mt-1.5" required />
-            <p className="mt-1 text-xs text-zinc-500">Street address or building name — however you&apos;d tell a friend to find it.</p>
-            {err("address") && <p className="mt-1 text-xs text-red-600">{err("address")}</p>}
+            <AddressAutocomplete
+              defaultValue={v?.address}
+              defaultLatitude={v?.latitude}
+              defaultLongitude={v?.longitude}
+              fieldError={err("address")}
+            />
           </div>
           <div>
             <Label htmlFor="bedrooms">Total bedrooms</Label>

@@ -7,14 +7,19 @@ import { prisma } from "@/lib/db";
 import { isAllowedEmail } from "@/lib/auth-domain";
 import { screenFairHousing } from "@/lib/fair-housing";
 import { sendReportNotification } from "@/lib/email";
-import { BUS_ROUTES } from "@/lib/constants";
 import type { CampusArea, Term } from "@/generated/prisma/enums";
 import { rateLimitByIp, RATE_LIMITS } from "@/lib/rate-limit";
 import {
+  cleanText,
   listingInputSchema,
+  parseCoordinates,
+  parseListingDate,
   reportReasonSchema,
+  sanitizeBusRoutes,
   sanitizeImageUrls,
+  isGoogleMapsConfigured,
   uuidSchema,
+  validateDateRange,
   zodFieldErrors,
 } from "@/lib/validation";
 
@@ -27,6 +32,8 @@ export type ListingValues = {
   priceMonthly: string;
   bedrooms: string;
   address: string;
+  latitude: string;
+  longitude: string;
   roommateGenders: string;
   contactEmail: string;
   contactPhone: string;
@@ -45,7 +52,7 @@ export type ListingActionState =
 
 /** Snapshot of submitted fields so the form can repopulate after a failed post. */
 function readListingValues(formData: FormData): ListingValues {
-  const str = (k: string) => String(formData.get(k) ?? "");
+  const str = (k: string) => cleanText(formData.get(k));
   return {
     title: str("title"),
     description: str("description"),
@@ -55,27 +62,19 @@ function readListingValues(formData: FormData): ListingValues {
     priceMonthly: str("priceMonthly"),
     bedrooms: str("bedrooms"),
     address: str("address"),
+    latitude: str("latitude"),
+    longitude: str("longitude"),
     roommateGenders: str("roommateGenders"),
     contactEmail: str("contactEmail"),
     contactPhone: str("contactPhone"),
     availableFrom: str("availableFrom"),
     availableTo: str("availableTo"),
-    busRoutes: formData.getAll("busRoutes").map(String),
+    busRoutes: sanitizeBusRoutes(formData.getAll("busRoutes")),
     petFriendly: formData.get("petFriendly") === "on",
     inUnitLaundry: formData.get("inUnitLaundry") === "on",
     parkingIncluded: formData.get("parkingIncluded") === "on",
     consentToShare: formData.get("consentToShare") === "on",
   };
-}
-
-function parseDate(value: FormDataEntryValue | null): Date | null {
-  if (!value) return null;
-  const d = new Date(String(value));
-  if (isNaN(d.getTime())) return null;
-  // Reject absurd dates (malformed / overflow input).
-  const year = d.getUTCFullYear();
-  if (year < 2000 || year > 2100) return null;
-  return d;
 }
 
 export async function createListing(
@@ -140,14 +139,27 @@ export async function createListing(
   const petFriendly = formData.get("petFriendly") === "on";
   const inUnitLaundry = formData.get("inUnitLaundry") === "on";
   const parkingIncluded = formData.get("parkingIncluded") === "on";
-  const busRoutes = formData
-    .getAll("busRoutes")
-    .map(String)
-    .filter((r) => (BUS_ROUTES as readonly string[]).includes(r));
-  // Only accept photo URLs we issued via Vercel Blob (rejects arbitrary links).
+  const busRoutes = sanitizeBusRoutes(formData.getAll("busRoutes"));
   const imageUrls = sanitizeImageUrls(formData.get("imageUrls"));
-  const availableFrom = parseDate(formData.get("availableFrom"));
-  const availableTo = parseDate(formData.get("availableTo"));
+  const availableFrom = parseListingDate(formData.get("availableFrom"));
+  const availableTo = parseListingDate(formData.get("availableTo"));
+
+  if (!validateDateRange(availableFrom, availableTo)) {
+    return {
+      fieldErrors: { availableTo: "End date must be on or after the start date." },
+      values,
+    };
+  }
+
+  const { latitude, longitude } = parseCoordinates(formData);
+  if (isGoogleMapsConfigured() && (latitude == null || longitude == null)) {
+    return {
+      fieldErrors: {
+        address: "Select an address from the Google suggestions dropdown.",
+      },
+      values,
+    };
+  }
 
   // Fair Housing screen on free-text fields (roommate gender is exempt).
   const violations = screenFairHousing(title, description);
@@ -171,8 +183,8 @@ export async function createListing(
       priceMonthly: Math.round(priceMonthly),
       bedrooms: bedrooms ?? null,
       address,
-      latitude: null,
-      longitude: null,
+      latitude,
+      longitude,
       distanceMiles: null,
       busRoutes,
       petFriendly,

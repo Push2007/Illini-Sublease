@@ -39,14 +39,47 @@ export default function TermsPage() {
         users involved.
       </p>
 
-      <h2>4. Never pay through us</h2>
+      <h2>4. Limitation of liability</h2>
+      <p>
+        To the fullest extent permitted by applicable law, IlliniSublease and PushTangle LLC,
+        and our officers, directors, employees, and agents (collectively, &quot;we&quot;), provide
+        the site and services <strong>&quot;as is&quot; and &quot;as available&quot;</strong> without
+        warranties of any kind, whether express, implied, or statutory, including any implied
+        warranties of merchantability, fitness for a particular purpose, title, or
+        non-infringement. We do not warrant that the site will be uninterrupted, error-free,
+        or free of harmful components.
+      </p>
+      <p>
+        To the fullest extent permitted by applicable law, <strong>we will not be liable</strong>{" "}
+        for any indirect, incidental, special, consequential, exemplary, or punitive damages,
+        or for any loss of profits, revenue, data, goodwill, or other intangible losses,
+        arising out of or related to your use of (or inability to use) the site, any listing,
+        any user content, or any interaction or transaction between users — whether based on
+        warranty, contract, tort (including negligence), strict liability, or any other legal
+        theory, even if we have been advised of the possibility of such damages.
+      </p>
+      <p>
+        To the fullest extent permitted by applicable law, our <strong>total aggregate
+        liability</strong> for any claim arising out of or relating to the site or these
+        Terms will not exceed the greater of (a) <strong>one hundred U.S. dollars
+        ($100)</strong> or (b) the amount you paid us to use the site in the twelve (12)
+        months before the event giving rise to the claim. Because the site is free to use,
+        this cap will often be one hundred U.S. dollars ($100).
+      </p>
+      <p>
+        Some jurisdictions do not allow the exclusion of certain warranties or the limitation
+        or exclusion of liability for incidental or consequential damages. In those
+        jurisdictions, our liability is limited to the maximum extent permitted by law.
+      </p>
+
+      <h2>5. Never pay through us</h2>
       <p>
         We <strong>never process payments</strong>. Do not send rent, deposits, or fees
         through this site. Any money you choose to exchange with another user (e.g. via
         Venmo, Zelle, or cash) is entirely at your own risk and outside our control.
       </p>
 
-      <h2>5. Prohibited conduct</h2>
+      <h2>6. Prohibited conduct</h2>
       <ul>
         <li>No discriminatory listings or preferences that violate Fair Housing law (see our <a href="/fair-housing">Fair Housing</a> page).</li>
         <li>No fraudulent, fake, or misleading listings.</li>
@@ -54,20 +87,20 @@ export default function TermsPage() {
         <li>No harassment, spam, or unlawful activity.</li>
       </ul>
 
-      <h2>6. Take-downs and account termination</h2>
+      <h2>7. Take-downs and account termination</h2>
       <p>
         We reserve the right to <strong>remove any listing or account at any time, for any
         reason, without warning</strong>, including listings that are reported, appear
         fraudulent, or violate these Terms.
       </p>
 
-      <h2>7. Eligibility</h2>
+      <h2>8. Eligibility</h2>
       <p>
         You must be a current University of Illinois affiliate with a valid @illinois.edu
         Google account to sign in. Do not share access to your Google account with others.
       </p>
 
-      <h2>8. Changes</h2>
+      <h2>9. Changes</h2>
       <p>We may update these Terms. Continued use after changes means you accept them.</p>
     </LegalShell>
   );

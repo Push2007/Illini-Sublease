@@ -1,10 +1,26 @@
+import { createHash } from "crypto";
+import { readFileSync } from "fs";
+import path from "path";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import { PrismaClient } from "@/generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
+  prismaSchemaHash: string | undefined;
 };
+
+function prismaSchemaHash() {
+  try {
+    const schema = readFileSync(
+      path.join(process.cwd(), "prisma/schema.prisma"),
+      "utf8"
+    );
+    return createHash("sha256").update(schema).digest("hex").slice(0, 16);
+  } catch {
+    return "unknown";
+  }
+}
 
 /** Strip accidental quotes (common when pasting into Vercel env vars). */
 function normalizeEnvValue(value: string | undefined) {
@@ -40,8 +56,21 @@ function createPrismaClient() {
   return new PrismaClient({ adapter });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+export const prisma = (() => {
+  const hash = prismaSchemaHash();
+  if (
+    process.env.NODE_ENV !== "production" &&
+    globalForPrisma.prisma &&
+    globalForPrisma.prismaSchemaHash !== hash
+  ) {
+    // Schema changed (e.g. new enum value) — drop stale client from hot reload.
+    globalForPrisma.prisma = undefined;
+  }
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrismaClient();
+    globalForPrisma.prismaSchemaHash = hash;
+  }
+
+  return globalForPrisma.prisma;
+})();

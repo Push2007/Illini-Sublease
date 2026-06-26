@@ -4,3 +4,10 @@ allowBuilds:
   prisma: true
   sharp: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@vercel/blob@2.5.0'
+overrides:
+  undici: '>=6.27.0'
+  '@hono/node-server': '>=1.19.13'
+  postcss: '>=8.5.10'
+  esbuild: '>=0.28.1'

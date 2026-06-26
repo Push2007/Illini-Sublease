@@ -18,3 +18,14 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* Google Places Autocomplete (New) widget */
+.address-autocomplete gmp-place-autocomplete {
+  width: 100%;
+  display: block;
+  color-scheme: light;
+}
+
+.pac-container {
+  z-index: 10000;
+}

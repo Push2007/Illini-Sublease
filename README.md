@@ -7,20 +7,22 @@
 IlliniSublease is a web app for University of Illinois Urbana-Champaign students who
 need to sublease their apartment while they're away (internship, study abroad, summer)
 and for students looking for a cheap, available place to live near campus. Posters list
-their unit with photos, price, term, and location; searchers filter by exactly what they
-need and contact the subleaser directly. Only verified UIUC students (`@illinois.edu`)
-can sign in, list, or view contact details — which keeps scammers out.
+their unit with photos, price, term, and address; searchers filter by what they need and
+contact the subleaser directly. Only verified UIUC affiliates with an `@illinois.edu`
+Google account can sign in, post listings, or view contact details.
 
 ## Features
 
-- **UIUC-only auth** — email + password (bcrypt-hashed) with an emailed 6-digit
-  verification code, **and** Google sign-in. Both are restricted to `@illinois.edu`.
+- **UIUC-only auth** — Google sign-in restricted to `@illinois.edu` addresses.
 - **Smart search filters** — campus area (North/South/Urbana/Champaign), term
   (Fall/Spring/Summer), price-range slider, room layout, MTD bus routes, and perks
   (pet-friendly, in-unit laundry, parking, roommate situation), plus keyword search.
-- **20-mile radius enforcement** — every listing's address is geocoded and rejected if
-  it's more than 20 miles from campus (901 W. Illinois St.).
-- **Listing detail pages** with an image gallery, map link, and full apartment info.
+- **Photo uploads** — listing photos upload directly to Vercel Blob (up to 8 images per
+  listing).
+- **Google Places address autocomplete** — posters pick a standardized address from
+  Google suggestions; coordinates are saved so "View on map" opens the right location.
+- **Listing detail pages** with an image gallery, Google Maps link (address search), and
+  full apartment info.
 - **Contact info hidden behind login** — a public visitor sees nothing; a logged-in
   UIUC user clicks "Reveal contact info" to see the email/phone.
 - **Legal & safety built in** (see below).
@@ -29,23 +31,24 @@ can sign in, list, or view contact details — which keeps scammers out.
 ## Tech stack
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript** + **Tailwind CSS v4**
-- **NextAuth v5 (Auth.js)** — Google OAuth + Credentials provider, JWT sessions
-- **bcryptjs** — password hashing
+- **NextAuth v5 (Auth.js)** — Google OAuth only, JWT sessions
 - **Prisma 7** + **PostgreSQL** (Neon), via the `pg` driver adapter
-- **Resend** — verification + report emails (falls back to console logging in dev)
+- **Vercel Blob** — client-side listing photo uploads
+- **Resend** — optional report notification emails (falls back to console logging in dev)
+- **Vercel Analytics**
 
-## Legal & compliance (mapped to requirements)
+## Legal & compliance
 
 | Requirement | Where it lives |
 |---|---|
-| Privacy Policy | `/privacy` — data collected, bcrypt storage, public contact sharing, auto-deletion |
-| Terms of Service | `/terms` — not the owner, Section 230, no payments, take-down rights |
+| Privacy Policy | `/privacy` — Google account data, listing/contact storage, auto-deletion |
+| Terms of Service | `/terms` — not the owner, Section 230, limitation of liability, no payments, take-down rights |
 | "Consent to Share" checkbox | Required checkbox on the post form (`new-listing-form.tsx`) |
 | Contact info behind login | `revealContact()` server action only returns details to signed-in users |
 | Automatic data deletion/hiding | Listings auto-expire after their end date / when marked rented; nightly cron at `/api/cron/cleanup` |
 | Fair Housing word filter + warning | `src/lib/fair-housing.ts` blocks discriminatory listings; bold warning on the form; `/fair-housing` page |
 | Section 230 / no money handled | Stated in `/terms`; the app never processes payments |
-| bcrypt password hashing | `src/auth.ts`, `src/app/auth/actions.ts` |
+| Input sanitization & rate limits | `src/lib/validation.ts`, `src/lib/rate-limit.ts` |
 | Secrets in env, HTTPS | All keys in `.env` (git-ignored); Vercel serves over HTTPS |
 | "Report this listing" → email | `reportListing()` + `src/lib/email.ts` notify `ADMIN_EMAIL` |
 | Footer links on every page | `src/components/site-footer.tsx` (rendered in the root layout) |
@@ -54,22 +57,20 @@ can sign in, list, or view contact details — which keeps scammers out.
 
 ### 1. Environment variables
 
-Copy `.env.example` to `.env` and fill it in. The Neon database is already provisioned and
-`DATABASE_URL` / `AUTH_SECRET` are set. You still need:
+Copy `.env.example` to `.env` and fill it in:
 
 | Variable | Required? | Notes |
 |---|---|---|
-| `DATABASE_URL` | ✅ (set) | Neon Postgres pooled connection string |
-| `AUTH_SECRET` | ✅ (set) | `openssl rand -base64 32` |
-| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | for Google login | From Google Cloud Console (see below) |
-| `RESEND_API_KEY` | optional in dev | Without it, verification codes print to the server console |
+| `DATABASE_URL` | ✅ | Neon Postgres pooled connection string |
+| `AUTH_SECRET` | ✅ | Generate with `openssl rand -base64 32` |
+| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | ✅ | From Google Cloud Console (see below) |
+| `BLOB_READ_WRITE_TOKEN` | ✅ for uploads | Vercel Blob store read/write token |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | ✅ for address autocomplete | Google Maps JavaScript API + Places (see below) |
+| `RESEND_API_KEY` | optional | Without it, report emails log to the server console |
 | `EMAIL_FROM` | optional | Defaults to `onboarding@resend.dev` |
 | `ADMIN_EMAIL` | optional | Where listing reports are sent |
 | `ALLOWED_EMAIL_DOMAIN` | optional | Defaults to `illinois.edu` |
 | `CRON_SECRET` | prod | Protects the cleanup cron endpoint |
-
-> **Dev tip:** With no `RESEND_API_KEY`, sign up and the 6-digit code is printed in your
-> terminal where `pnpm dev` is running — paste it into the verify screen.
 
 ### 2. Google OAuth setup
 
@@ -80,12 +81,22 @@ Copy `.env.example` to `.env` and fill it in. The Neon database is already provi
    - `https://<your-vercel-domain>/api/auth/callback/google`
 4. Put the client ID/secret into `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`.
 
-### 3. Install, sync DB, seed, run
+### 3. Google Maps / Places (address autocomplete)
+
+1. In [Google Cloud Console](https://console.cloud.google.com/), enable **Maps JavaScript API** and **Places API (New)**.
+2. Create an **API key** and restrict it:
+   - **Application restrictions:** HTTP referrers — `http://localhost:3000/*` and `https://<your-vercel-domain>/*`
+   - **API restrictions:** Maps JavaScript API + **Places API (New)** only
+3. Add the key as `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in `.env` and Vercel.
+
+Without this key, the post form falls back to a plain text address field (no autocomplete).
+
+### 4. Install, sync DB, seed, run
 
 ```bash
 pnpm install
 pnpm db:push     # create tables in Neon
-pnpm seed        # optional: load 4 demo listings
+pnpm seed        # optional: load demo listings
 pnpm dev         # http://localhost:3000
 ```
 
@@ -96,9 +107,10 @@ Useful scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:studio`.
 1. Push this folder to a GitHub repo and import it in Vercel.
 2. Add all `.env` variables in **Vercel → Project → Settings → Environment Variables**
    (set `CRON_SECRET` to a random value in production).
-3. Update the Google OAuth redirect URI to your Vercel domain.
-4. Deploy. The build runs `prisma generate && next build`.
-5. The nightly cleanup cron is configured in `vercel.json` (`/api/cron/cleanup`, 06:00 UTC)
+3. Create a **Blob store** in the Vercel project and add `BLOB_READ_WRITE_TOKEN`.
+4. Update the Google OAuth redirect URI to your Vercel domain.
+5. Deploy. The build runs `prisma generate && next build`.
+6. The nightly cleanup cron is configured in `vercel.json` (`/api/cron/cleanup`, 06:00 UTC)
    and is automatically authorized with `CRON_SECRET`.
 
 ## Project structure
@@ -106,29 +118,30 @@ Useful scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:studio`.
 ```
 src/
   app/
-    page.tsx                 # landing/hero + latest listings
+    page.tsx                 # landing/hero + featured listings
     search/                  # filters + results
     listings/[id]/           # detail (login-gated contact, report)
     listings/new/            # post form (consent + Fair Housing warning)
     listings/actions.ts      # create/reveal/report/status server actions
     dashboard/               # my listings
-    login, signup, verify/   # auth screens
-    auth/actions.ts          # signup/verify/login server actions
+    login/                   # Google sign-in
+    signup, verify/          # redirect to /login (legacy routes)
+    auth/actions.ts          # sign-in/sign-out/delete-account actions
     privacy, terms, safety, fair-housing/   # legal pages
     api/auth/[...nextauth]/  # Auth.js handler
+    api/upload/              # Vercel Blob upload tokens
     api/cron/cleanup/        # scheduled expiry/cleanup
-  auth.ts                    # NextAuth config (Google + Credentials)
+  auth.ts                    # NextAuth config (Google only)
   components/                # UI, header/footer, forms, listing pieces
-  lib/                       # db, listings, geo, geocode, fair-housing, email, constants
-prisma/schema.prisma         # User, VerificationCode, Listing, ListingImage, Report
+  lib/                       # db, listings, maps, fair-housing, email, validation, constants
+prisma/schema.prisma         # User, Listing, ListingImage, Report, RateLimit
 ```
 
 ## Notes & limitations
 
-- Photos are added as URLs (paste links). Swapping to file uploads (e.g. Vercel Blob) is a
-  natural next step.
-- Geocoding uses the free OpenStreetMap Nominatim API; for heavy traffic, switch to a keyed
-  geocoder.
+- Listings use free-text addresses. There is no geocoding or distance-from-campus
+  enforcement — posters and searchers should confirm location themselves.
 - Not affiliated with or endorsed by the University of Illinois. All listings are
   user-generated; the platform never handles payments.
-```
+- This is not legal advice. Terms and policies are provided for transparency; consult a
+  lawyer for binding guidance.

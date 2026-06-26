@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/db";
 import { isAllowedEmail, normalizeEmail } from "@/lib/auth-domain";
+import { sanitizeProfileImageUrl, sanitizeProfileName } from "@/lib/validation";
 
 const useSecureCookies = process.env.NODE_ENV === "production";
 
@@ -37,14 +38,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const dbUser = await prisma.user.upsert({
         where: { email },
         update: {
-          name: user.name ?? undefined,
-          image: user.image ?? undefined,
+          name: sanitizeProfileName(user.name),
+          image: sanitizeProfileImageUrl(user.image),
           emailVerified: new Date(),
         },
         create: {
           email,
-          name: user.name ?? undefined,
-          image: user.image ?? undefined,
+          name: sanitizeProfileName(user.name),
+          image: sanitizeProfileImageUrl(user.image),
           emailVerified: new Date(),
         },
       });

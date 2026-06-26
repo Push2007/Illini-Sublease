@@ -22,7 +22,8 @@ export type CampusArea = (typeof CampusArea)[keyof typeof CampusArea]
 export const Term = {
   FALL: 'FALL',
   SPRING: 'SPRING',
-  SUMMER: 'SUMMER'
+  SUMMER: 'SUMMER',
+  WINTER: 'WINTER'
 } as const
 
 export type Term = (typeof Term)[keyof typeof Term]
