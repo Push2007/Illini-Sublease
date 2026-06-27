@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { GoogleButton } from "@/components/auth/google-button";
 
-export const metadata = { title: "Log in — IlliniSublease" };
+export const metadata = { title: "Log in" };
 
 export default async function LoginPage() {
   const session = await auth();

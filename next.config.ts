@@ -22,13 +22,16 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "img-src 'self' data: blob: https://*.vercel-storage.com https://lh3.googleusercontent.com https://picsum.photos https://*.picsum.photos https://*.gstatic.com https://*.googleapis.com https://*.google.com",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://*.googleapis.com",
+      "img-src 'self' data: blob: https://*.vercel-storage.com https://lh3.googleusercontent.com https://picsum.photos https://*.picsum.photos https://*.gstatic.com https://*.googleapis.com https://*.google.com https://*.googleusercontent.com",
+      // Google Maps/Places (New) allowlist per developers.google.com/maps/documentation/javascript/content-security-policy
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.google.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com https://*.gstatic.com",
       // @vercel/blob client uploads POST to https://vercel.com/api/blob, then
       // read URLs resolve on *.vercel-storage.com. Google Places loads from Maps JS API.
-      "connect-src 'self' https://vercel.com https://*.vercel-storage.com https://blob.vercel-storage.com https://maps.googleapis.com https://places.googleapis.com https://*.googleapis.com https://*.gstatic.com",
+      "connect-src 'self' https://vercel.com https://*.vercel-storage.com https://blob.vercel-storage.com https://*.googleapis.com https://*.google.com https://*.gstatic.com data: blob:",
+      "frame-src https://*.google.com",
+      "worker-src blob:",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

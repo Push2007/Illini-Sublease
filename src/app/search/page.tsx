@@ -3,7 +3,7 @@ import { ListingCard } from "@/components/listing-card";
 import { searchListings } from "@/lib/listings";
 import { parseSearchParams } from "@/lib/validation";
 
-export const metadata = { title: "Search subleases — IlliniSublease" };
+export const metadata = { title: "Search subleases" };
 
 type SP = Record<string, string | string[] | undefined>;
 

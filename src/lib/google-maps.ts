@@ -21,7 +21,7 @@ function pollForImportLibrary(timeoutMs = 20_000): Promise<void> {
       if (Date.now() - started > timeoutMs) {
         reject(
           new Error(
-            "Google Maps did not initialize. Check your API key, billing, and HTTP referrer restrictions for http://localhost:3000/*."
+            "Google Maps did not initialize. Check your API key, billing, and HTTP referrer restrictions (include http://localhost:3000/* and https://illini-sublease.vercel.app/* in Google Cloud Console)."
           )
         );
         return;
@@ -51,13 +51,17 @@ function injectGoogleMapsBootstrap(key: string): Promise<void> {
   });
 }
 
+function resolveMapsApiKey(apiKey?: string): string | undefined {
+  return apiKey?.trim() || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim();
+}
+
 /** Load Maps JS API + Places library (New) via importLibrary. */
-export function loadGoogleMapsPlaces(): Promise<void> {
+export function loadGoogleMapsPlaces(apiKey?: string): Promise<void> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Google Maps can only load in the browser."));
   }
 
-  const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim();
+  const key = resolveMapsApiKey(apiKey);
   if (!key) {
     return Promise.reject(new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is not set."));
   }
@@ -107,6 +111,6 @@ export function parsePlaceLocation(loc: unknown): { lat: number; lng: number } |
   return { lat, lng };
 }
 
-export function isGoogleMapsConfigured(): boolean {
-  return Boolean(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim());
+export function isGoogleMapsConfigured(apiKey?: string): boolean {
+  return Boolean(resolveMapsApiKey(apiKey));
 }

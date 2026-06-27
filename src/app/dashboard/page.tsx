@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ListingManageActions } from "@/components/listing-manage-actions";
 import { DeleteAccount } from "@/components/delete-account";
 
-export const metadata = { title: "My listings — IlliniSublease" };
+export const metadata = { title: "My listings" };
 
 export default async function DashboardPage() {
   const session = await auth();

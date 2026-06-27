@@ -11,10 +11,17 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
-  title: "IlliniSublease — UIUC student sublease matchmaking",
+  title: {
+    default: "Illini Sublease — UIUC student sublease matchmaking",
+    template: "%s — Illini Sublease",
+  },
   description:
     "Find and post short-term apartment subleases near the University of Illinois Urbana-Champaign. Verified @illinois.edu students only.",
-    verification: {
+  openGraph: {
+    siteName: "Illini Sublease",
+    type: "website",
+  },
+  verification: {
       google: "DgsW_IELG3RBiWOy-2oGEfb9HujDOvY2dpp8htVrlb4", 
     },
 };

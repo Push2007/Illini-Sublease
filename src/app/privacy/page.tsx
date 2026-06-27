@@ -1,6 +1,6 @@
 import { LegalShell } from "@/components/legal-shell";
 
-export const metadata = { title: "Privacy Policy — IlliniSublease" };
+export const metadata = { title: "Privacy Policy" };
 
 export default function PrivacyPage() {
   return (

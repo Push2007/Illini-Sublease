@@ -3,12 +3,16 @@ import { Search, ShieldCheck, MapPin, BadgeCheck, Bus } from "lucide-react";
 import { getFeaturedListings } from "@/lib/listings";
 import { ListingCard } from "@/components/listing-card";
 import { Button } from "@/components/ui/button";
+import { JsonLd } from "@/components/json-ld";
+import { homePageJsonLd } from "@/lib/json-ld";
 
 export default async function HomePage() {
   const featured = await getFeaturedListings(6);
 
   return (
-    <main className="flex-1">
+    <>
+      <JsonLd data={homePageJsonLd()} />
+      <main className="flex-1">
       {/* Hero */}
       <section className="relative overflow-hidden bg-[#13294B] text-white">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
@@ -79,7 +83,8 @@ export default async function HomePage() {
           </div>
         )}
       </section>
-    </main>
+      </main>
+    </>
   );
 }
 

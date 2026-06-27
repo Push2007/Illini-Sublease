@@ -1,6 +1,6 @@
 import { LegalShell } from "@/components/legal-shell";
 
-export const metadata = { title: "Safety & scams — IlliniSublease" };
+export const metadata = { title: "Safety & scams" };
 
 export default function SafetyPage() {
   return (

@@ -26,7 +26,13 @@ const MAX_IMAGES = 8;
 
 type UploadedImage = { url: string; name: string };
 
-export function NewListingForm({ userEmail }: { userEmail: string }) {
+export function NewListingForm({
+  userEmail,
+  googleMapsApiKey = "",
+}: {
+  userEmail: string;
+  googleMapsApiKey?: string;
+}) {
   const [state, formAction, pending] = useActionState<ListingActionState, FormData>(
     createListing,
     undefined
@@ -165,6 +171,7 @@ export function NewListingForm({ userEmail }: { userEmail: string }) {
           <div>
             <Label htmlFor="address">Apartment address</Label>
             <AddressAutocomplete
+              apiKey={googleMapsApiKey}
               defaultValue={v?.address}
               defaultLatitude={v?.latitude}
               defaultLongitude={v?.longitude}

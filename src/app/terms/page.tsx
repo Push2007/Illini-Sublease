@@ -1,6 +1,6 @@
 import { LegalShell } from "@/components/legal-shell";
 
-export const metadata = { title: "Terms of Service — IlliniSublease" };
+export const metadata = { title: "Terms of Service" };
 
 export default function TermsPage() {
   return (

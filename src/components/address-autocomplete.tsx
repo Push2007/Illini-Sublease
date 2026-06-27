@@ -10,6 +10,7 @@ import {
 } from "@/lib/google-maps";
 
 type AddressAutocompleteProps = {
+  apiKey?: string;
   defaultValue?: string;
   defaultLatitude?: string;
   defaultLongitude?: string;
@@ -17,6 +18,7 @@ type AddressAutocompleteProps = {
 };
 
 export function AddressAutocomplete({
+  apiKey = "",
   defaultValue = "",
   defaultLatitude = "",
   defaultLongitude = "",
@@ -30,7 +32,7 @@ export function AddressAutocomplete({
   const [latitude, setLatitude] = useState(defaultLatitude);
   const [longitude, setLongitude] = useState(defaultLongitude);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const mapsConfigured = isGoogleMapsConfigured();
+  const mapsConfigured = isGoogleMapsConfigured(apiKey);
 
   function applySelection(formatted: string, lat: number, lng: number) {
     const latStr = String(lat);
@@ -60,7 +62,7 @@ export function AddressAutocomplete({
     let widget: google.maps.places.PlaceAutocompleteElement | null = null;
     let cancelled = false;
 
-    loadGoogleMapsPlaces()
+    loadGoogleMapsPlaces(apiKey)
       .then(async () => {
         if (cancelled || !containerRef.current || !window.google?.maps?.importLibrary) return;
 
@@ -117,7 +119,7 @@ export function AddressAutocomplete({
       cancelled = true;
       widget?.remove();
     };
-  }, [mapsConfigured]);
+  }, [apiKey, mapsConfigured]);
 
   if (!mapsConfigured) {
     return (

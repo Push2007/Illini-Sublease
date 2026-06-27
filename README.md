@@ -20,7 +20,7 @@ Google account can sign in, post listings, or view contact details.
 - **Photo uploads** — listing photos upload directly to Vercel Blob (up to 8 images per
   listing).
 - **Google Places address autocomplete** — posters pick a standardized address from
-  Google suggestions; coordinates are saved so "View on map" opens the right location.
+  Google suggestions; coordinates are saved for validation, and "View on map" opens the listing address.
 - **Listing detail pages** with an image gallery, Google Maps link (address search), and
   full apartment info.
 - **Contact info hidden behind login** — a public visitor sees nothing; a logged-in
@@ -85,9 +85,11 @@ Copy `.env.example` to `.env` and fill it in:
 
 1. In [Google Cloud Console](https://console.cloud.google.com/), enable **Maps JavaScript API** and **Places API (New)**.
 2. Create an **API key** and restrict it:
-   - **Application restrictions:** HTTP referrers — `http://localhost:3000/*` and `https://<your-vercel-domain>/*`
+   - **Application restrictions:** HTTP referrers — add **both**:
+     - `http://localhost:3000/*`
+     - `https://illini-sublease.vercel.app/*` (and `https://*.vercel.app/*` if you use preview deploys)
    - **API restrictions:** Maps JavaScript API + **Places API (New)** only
-3. Add the key as `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in `.env` and Vercel.
+3. Add the key as `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in `.env` **and** Vercel → Environment Variables (Production), then **redeploy**.
 
 Without this key, the post form falls back to a plain text address field (no autocomplete).
 

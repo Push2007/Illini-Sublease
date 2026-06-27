@@ -1,6 +1,6 @@
 import { LegalShell } from "@/components/legal-shell";
 
-export const metadata = { title: "Fair Housing — IlliniSublease" };
+export const metadata = { title: "Fair Housing" };
 
 export default function FairHousingPage() {
   return (
