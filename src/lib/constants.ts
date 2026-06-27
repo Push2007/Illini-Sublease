@@ -1,8 +1,8 @@
 import type { CampusArea, Term } from "@/generated/prisma/enums";
 
 export const CAMPUS_AREAS: { value: CampusArea; label: string; hint: string }[] = [
-  { value: "NORTH", label: "North Campus", hint: "Engineering / Grainger" },
-  { value: "SOUTH", label: "South Campus", hint: "\u201cSenior Land\u201d" },
+  { value: "NORTH", label: "North Campus", hint: "Engineering Quad" },
+  { value: "SOUTH", label: "South Campus", hint: "South Quad" },
   { value: "URBANA", label: "Urbana side", hint: "East of campus" },
   { value: "CHAMPAIGN", label: "Champaign side", hint: "West of campus" },
 ];
