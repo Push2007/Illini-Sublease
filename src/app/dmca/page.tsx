@@ -19,7 +19,7 @@ export default function DmcaPage() {
       </p>
       <ul>
         <li>
-          <strong>Agent:</strong> {OPERATOR} (DMCA Agent)
+          <strong>Organization/Agent:</strong> {OPERATOR} (DMCA Agent)
         </li>
         <li>
           <strong>Email:</strong>{" "}
