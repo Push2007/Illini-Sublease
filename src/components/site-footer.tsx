@@ -56,10 +56,6 @@ export function SiteFooter() {
           operated by {OPERATOR} and is <strong className="font-medium">not affiliated with,
           endorsed by, or operated by</strong> the University of Illinois Urbana-Champaign or
           the Board of Trustees of the University of Illinois. All listings are user-generated.
-          DMCA agent:{" "}
-          <a href={`mailto:${DMCA_AGENT_EMAIL}`} className="hover:text-zinc-600 hover:underline">
-            {DMCA_AGENT_EMAIL}
-          </a>
         </p>
       </div>
     </footer>
