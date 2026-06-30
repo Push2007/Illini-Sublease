@@ -53,7 +53,7 @@ export default async function HomePage() {
       {/* Feature strip */}
       <section className="border-b border-zinc-200 bg-white">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6">
-          <Feature icon={<ShieldCheck className="h-5 w-5" />} title="UIUC-verified" desc="Sign in with your @illinois.edu Google account. No randoms from the internet." />
+          <Feature icon={<ShieldCheck className="h-5 w-5" />} title="For UIUC students" desc="Sign in with your @illinois.edu Google account in order to post a sublease or get the contact info of a subleaser." />
           <Feature icon={<MapPin className="h-5 w-5" />} title="Search by location" desc="Filter by campus area, address keyword, and MTD bus routes, then confirm the spot in person." />
           <Feature icon={<Bus className="h-5 w-5" />} title="Filter by needs" desc="Price, term, layout, MTD bus routes, pets, laundry, parking, and more." />
         </div>

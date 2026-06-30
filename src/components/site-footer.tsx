@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DMCA_AGENT_EMAIL, OPERATOR, SITE_NAME, SITE_NAME_ALT } from "@/lib/legal";
 
 export function SiteFooter() {
   return (
@@ -6,11 +7,13 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-sm">
-            <p className="text-sm font-semibold text-[#13294B]">IlliniSublease</p>
+            <p className="text-sm font-semibold text-[#13294B]">{SITE_NAME}</p>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-              A student-to-student sublease board for the University of Illinois
-              Urbana-Champaign. We are not a broker or landlord and we never handle
-              payments. Verify everything before you pay anyone.
+              An independent student-to-student sublease board for the University of Illinois
+              Urbana-Champaign community. <strong className="font-medium text-zinc-600">Not
+              affiliated with or endorsed by the University of Illinois.</strong> We are not a
+              broker or landlord and we never handle payments. Verify everything before you pay
+              anyone.
             </p>
             <p className="mt-3 text-xs text-zinc-500">
               Site administrator:{" "}
@@ -42,13 +45,21 @@ export function SiteFooter() {
             <Link href="/fair-housing" className="text-zinc-600 hover:text-zinc-900">
               Fair Housing
             </Link>
+            <Link href="/dmca" className="text-zinc-600 hover:text-zinc-900">
+              Copyright &amp; DMCA
+            </Link>
           </nav>
         </div>
 
         <p className="mt-6 border-t border-zinc-100 pt-4 text-xs text-zinc-400">
-          &copy; {new Date().getFullYear()} PushTangle LLC. IlliniSublease is operated by
-          PushTangle LLC and is not affiliated with or endorsed by the University of
-          Illinois. All listings are user-generated.
+          &copy; {new Date().getFullYear()} {OPERATOR}. {SITE_NAME} ({SITE_NAME_ALT}) is
+          operated by {OPERATOR} and is <strong className="font-medium">not affiliated with,
+          endorsed by, or operated by</strong> the University of Illinois Urbana-Champaign or
+          the Board of Trustees of the University of Illinois. All listings are user-generated.
+          DMCA agent:{" "}
+          <a href={`mailto:${DMCA_AGENT_EMAIL}`} className="hover:text-zinc-600 hover:underline">
+            {DMCA_AGENT_EMAIL}
+          </a>
         </p>
       </div>
     </footer>
