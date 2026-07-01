@@ -45,7 +45,7 @@ async function main() {
       petFriendly: false,
       inUnitLaundry: true,
       parkingIncluded: false,
-      roommateGenders: "No roommates (whole unit)",
+      roommateGenders: "No roommates",
       imgs: ["illini-a1", "illini-a2", "illini-a3"],
     },
     {
@@ -81,7 +81,7 @@ async function main() {
       petFriendly: false,
       inUnitLaundry: false,
       parkingIncluded: true,
-      roommateGenders: "No roommates (whole unit)",
+      roommateGenders: "No roommates",
       imgs: ["illini-c1", "illini-c2"],
     },
     {
