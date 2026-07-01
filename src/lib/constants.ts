@@ -36,7 +36,7 @@ export const ROOMMATE_GENDER_OPTIONS = [
   "Co-ed / mixed",
   "Female roommates",
   "Male roommates",
-  "No roommates (whole unit)",
+  "No roommates",
 ] as const;
 
 export const PRICE_MIN = 200;
