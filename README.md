@@ -63,11 +63,11 @@ Copy `.env.example` to `.env` (and optionally `.env.local`) and fill it in:
 
 | Variable | Required? | Notes |
 |---|---|---|
-| `DATABASE_URL` | ✅ | Neon Postgres **pooled** connection string |
-| `AUTH_SECRET` | ✅ | `openssl rand -base64 32` |
-| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | ✅ | Google OAuth web client (see below) |
-| `BLOB_READ_WRITE_TOKEN` | ✅ for uploads | From a Vercel Blob store |
-| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | ✅ for autocomplete | Maps JavaScript API + Places API (New) |
+| `DATABASE_URL` | Yes | Neon Postgres **pooled** connection string |
+| `AUTH_SECRET` | Yes | `openssl rand -base64 32` |
+| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | YEs | Google OAuth web client (see below) |
+| `BLOB_READ_WRITE_TOKEN` | Yes, for uploads | From a Vercel Blob store |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Yes, for autocomplete | Maps JavaScript API + Places API (New) |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URL, e.g. `https://illini-sublease.vercel.app` — used by sitemap, robots, metadata |
 | `RESEND_API_KEY` | optional | Without it, report emails log to the server console |
 | `EMAIL_FROM` | optional | Defaults to `UIUC Sublease <onboarding@resend.dev>` |
